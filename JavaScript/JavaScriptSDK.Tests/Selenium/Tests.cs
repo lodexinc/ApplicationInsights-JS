@@ -36,6 +36,17 @@ namespace ApplicationInsights.Javascript.Tests
  @".\perfResults.txt";
 #endif
 
+        private RemoteWebDriver GetWebDriver()
+        {
+            // Chrome
+            /*var options = new OpenQA.Selenium.Chrome.ChromeOptions();
+            options.AddArgument("no-sandbox");
+
+            return new OpenQA.Selenium.Chrome.ChromeDriver(options);*/
+
+            return new OpenQA.Selenium.Firefox.FirefoxDriver();
+        }
+
         [ClassInitialize]
         public static void Setup(TestContext context)
         {
@@ -54,13 +65,13 @@ namespace ApplicationInsights.Javascript.Tests
         #endregion
 
         [TestMethod]
-        public void Firefox()
+        public void RunUnitTests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), PATH_TO_TESTS);
+            RunTest(this.GetWebDriver(), PATH_TO_TESTS);
         }
 
         [TestMethod]
-        public void Firefox_CodeCoverage()
+        public void RunCodeCoverage()
         {
             var ffProfile = new OpenQA.Selenium.Firefox.FirefoxProfile();
             ffProfile.SetPreference("browser.download.dir", TestContext.TestRunResultsDirectory);
@@ -71,33 +82,33 @@ namespace ApplicationInsights.Javascript.Tests
         }
 
         [TestMethod]
-        public void Firefox_E2E_DisableTelemetryTests()
+        public void E2E_DisableTelemetryTests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), "/E2ETests/E2E.DisableTelemetryTests.htm");
+            RunTest(this.GetWebDriver(), "/E2ETests/E2E.DisableTelemetryTests.htm");
         }
 
         [TestMethod]
-        public void Firefox_E2E_PublicApiTests()
+        public void E2E_PublicApiTests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), "/E2ETests/E2E.PublicApiTests.htm");
+            RunTest(this.GetWebDriver(), "/E2ETests/E2E.PublicApiTests.htm");
         }
 
         [TestMethod]
-        public void Firefox_E2E_SanitizerE2ETests()
+        public void E2E_SanitizerE2ETests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), "/E2ETests/E2E.SanitizerE2ETests.htm");
+            RunTest(this.GetWebDriver(), "/E2ETests/E2E.SanitizerE2ETests.htm");
         }
 
         [TestMethod]
-        public void Firefox_E2E_snippetTests()
+        public void E2E_snippetTests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), "/E2ETests/E2E.snippetTests.htm");
+            RunTest(this.GetWebDriver(), "/E2ETests/E2E.snippetTests.htm");
         }
 
         [TestMethod]
-        public void Firefox_E2E_ValidateApiTests()
+        public void E2E_ValidateApiTests()
         {
-            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), "/E2ETests/E2E.ValidateApiTests.htm");
+            RunTest(this.GetWebDriver(), "/E2ETests/E2E.ValidateApiTests.htm");
         }
 
         // Tests are failing, need to fix before we enable them.
@@ -132,15 +143,15 @@ namespace ApplicationInsights.Javascript.Tests
         }
 
         //[TestMethod]
-        public void Chrome()
+        public void Firefox()
         {
-            RunTest(new OpenQA.Selenium.Chrome.ChromeDriver(), PATH_TO_TESTS);
+            RunTest(new OpenQA.Selenium.Firefox.FirefoxDriver(), PATH_TO_TESTS);
         }
 
         //[TestMethod]
         public void FirefoxPerf()
         {
-            RunPerfTest(new OpenQA.Selenium.Firefox.FirefoxDriver());
+            RunPerfTest(new OpenQA.Selenium.Chrome.ChromeDriver());
         }
 
         //[TestMethod]
@@ -226,15 +237,20 @@ namespace ApplicationInsights.Javascript.Tests
 
                     foreach(var step in steps)
                     {
-                        Console.Write(step.GetAttribute("class")+ " : ");
-                        
-                        var stepDetails = step.FindElements(OpenQA.Selenium.By.XPath("./span"));
-                        foreach(var details in stepDetails)
-                        {
-                            Console.Write(details.GetAttribute("innerHTML")+ " ");
-                        }
+                        var result = step.GetAttribute("class");
 
-                        Console.WriteLine();
+                        if (result == "fail")
+                        {
+                            Console.Write(step.GetAttribute("class") + " : ");
+
+                            var stepDetails = step.FindElements(OpenQA.Selenium.By.XPath("./span"));
+                            foreach (var details in stepDetails)
+                            {
+                                Console.Write(details.GetAttribute("innerHTML") + " ");
+                            }
+
+                            Console.WriteLine();
+                        }
                     }
 
                     Console.WriteLine("===");
