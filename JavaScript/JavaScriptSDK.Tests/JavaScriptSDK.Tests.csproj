@@ -59,9 +59,8 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
-    <Reference Include="WebDriver, Version=2.53.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\packages\Selenium.WebDriver.2.53.0\lib\net40\WebDriver.dll</HintPath>
+    <Reference Include="WebDriver, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Selenium.WebDriver.3.0.0\lib\net40\WebDriver.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -80,6 +79,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="E2ETests\PostBuild.ps1" />
+    <Content Include="chromedriver.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="E2ETests\E2E.ValidateApiTests.htm" />
     <Content Include="E2ETests\E2E.snippetTests.htm" />
     <Content Include="E2ETests\E2E.DisableTelemetryTests.htm" />
@@ -141,6 +143,9 @@
     <Content Include="E2ETests\standalone\sprint69.html" />
     <Content Include="E2ETests\standalone\test.html" />
     <Content Include="E2ETests\standalone\tests.js" />
+    <Content Include="geckodriver.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Performance\readme.txt" />
     <Content Include="Selenium\testPageNoAppInsights.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -153,9 +158,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="External\sinon-1.17.2.js" />
-    <Content Include="chromedriver.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="IEDriverServer.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
